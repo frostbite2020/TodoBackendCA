@@ -15,6 +15,7 @@ namespace Application.TodoCategories.Queries.ExportTodoCategory
     public class ExportTodoCategoriesQuery : IRequest<ExportTodoCategoriesVm>
     {
         public int ListId { get; set; }
+
     }
 
     public class ExportTodoCategoriesQueryHandler : IRequestHandler<ExportTodoCategoriesQuery, ExportTodoCategoriesVm>
@@ -38,9 +39,9 @@ namespace Application.TodoCategories.Queries.ExportTodoCategory
                 .ProjectTo<TodoCategoryItemFileRecord>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
-            vm.Content = _fileBuilder.BuildTodoItemFile(records);
+            vm.Content = _fileBuilder.BuildTodoItemsFile(records);
             vm.ContentType = "text/csv";
-            vm.FileName = "TodoLists.csv";
+            vm.FileName = "TodoItems.csv";
 
             return await Task.FromResult(vm);
         }

@@ -1,5 +1,7 @@
 using Application;
+using FluentValidation.AspNetCore;
 using Infrastructure;
+using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TodoList.Filters;
 
 namespace TodoList
 {
@@ -28,6 +31,21 @@ namespace TodoList
         {
             services.AddApplication();
             services.AddInfrastructure(Configuration);
+            services.AddHttpContextAccessor();
+
+
+            services.AddHealthChecks()
+                .AddDbContextCheck<ApplicationDbContext>();
+            services.AddControllersWithViews(options =>
+                options.Filters.Add<ApiExceptionFilterAttribute>())
+                    .AddFluentValidation();
+            // Customise default API behaviour
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+            services.AddSwaggerGen();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,6 +55,20 @@ namespace TodoList
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            //clean
+            app.UseHealthChecks("/health");
+
+            //clean end here
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseRouting();
 

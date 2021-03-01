@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Application.Common.Mappings;
+using Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Application.TodoCategories.Queries.GetTodoCategory
 {
-    public class TodoCategoryDto
+    public class TodoCategoryDto : IMapFrom<TodoCategory>
     {
         public TodoCategoryDto()
         {
@@ -15,7 +17,6 @@ namespace Application.TodoCategories.Queries.GetTodoCategory
 
         public string CategoryTitle { get; set; }
 
-        public string Colour { get; set; }
 
         public IList<TodoItemDto> Items { get; set; }
     }

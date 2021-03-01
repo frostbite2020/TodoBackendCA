@@ -1,17 +1,15 @@
-﻿/*using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using Domain.Common;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Persistence
+namespace Infrastructure
 {
     public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
@@ -31,7 +29,7 @@ namespace Infrastructure.Persistence
 
         public DbSet<TodoCategory> TodoCategories { get; set; }
 
-        *//*public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        /*public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             foreach (Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<AuditableEntity> entry in ChangeTracker.Entries<AuditableEntity>())
             {
@@ -54,7 +52,7 @@ namespace Infrastructure.Persistence
             await DispatchEvents();
 
             return result;
-        }*//*
+        }*/
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -80,5 +78,3 @@ namespace Infrastructure.Persistence
         }
     }
 }
-
-*/

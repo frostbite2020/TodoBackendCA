@@ -13,7 +13,7 @@ namespace Application.TodoCategories.Queries.GetTodoCategory
 
         public int ListId { get; set; }
 
-        public string Title { get; set; }
+        public string ActivityTitle { get; set; }
 
         public bool Done { get; set; }
 
