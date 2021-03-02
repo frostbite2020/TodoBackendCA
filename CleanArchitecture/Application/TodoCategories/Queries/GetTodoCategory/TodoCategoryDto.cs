@@ -10,14 +10,13 @@ namespace Application.TodoCategories.Queries.GetTodoCategory
     {
         public TodoCategoryDto()
         {
-            Items = new List<TodoItemDto>();
+            Lists = new List<TodoItemDto>();
         }
 
         public int Id { get; set; }
 
         public string CategoryTitle { get; set; }
 
-
-        public IList<TodoItemDto> Items { get; set; }
+        public IList<TodoItemDto> Lists { get; set; }
     }
 }

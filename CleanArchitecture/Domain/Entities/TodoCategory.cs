@@ -9,6 +9,6 @@ namespace Domain.Entities
     {
         public int Id { get; set; }
         public string CategoryTitle { get; set; }
-        public IList<TodoItem> Lists { get; set; } = new List<TodoItem>();
+        public IList<TodoItem> Lists { get; private set; } = new List<TodoItem>();
     }
 }
