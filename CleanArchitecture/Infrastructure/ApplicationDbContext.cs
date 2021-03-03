@@ -1,6 +1,8 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Common;
 using Domain.Entities;
+using Infrastructure.Identity.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure
 {
-    public class ApplicationDbContext : DbContext, IApplicationDbContext
+    public class ApplicationDbContext : IdentityDbContext, IApplicationDbContext
     {
         private readonly IDateTime _dateTime;
         private readonly IDomainEventService _domainEventService;
@@ -28,6 +30,7 @@ namespace Infrastructure
         public DbSet<TodoItem> TodoItems { get; set; }
 
         public DbSet<TodoCategory> TodoCategories { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         /*public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {

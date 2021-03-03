@@ -4,9 +4,11 @@ using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Infrastructure.Identity.Entities;
 
 namespace Infrastructure
 {
@@ -25,7 +27,8 @@ namespace Infrastructure
             services.AddTransient<IDateTime, DateTimeService>();
             services.AddTransient<ICsvFileBuilder, CsvFileBuilder>();
 
-  
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             return services;
         }
