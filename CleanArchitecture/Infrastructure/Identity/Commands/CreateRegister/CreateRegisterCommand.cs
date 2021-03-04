@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Identity.Commands.CreateRegister
 {
-    public class CreateRegisterCommand : IRequest<(Result, string)>
+    public class CreateRegisterCommand : IRequest<string>
     {
         public string UserName { get; set; }
         public string Password { get; set; }
 
     }
-    public class CreateRegisterCommandHandler : IRequestHandler<CreateRegisterCommand, (Result, string)>
+    public class CreateRegisterCommandHandler : IRequestHandler<CreateRegisterCommand, string>
     {
         private readonly IdentityService _identityService;
 
@@ -26,11 +26,11 @@ namespace Infrastructure.Identity.Commands.CreateRegister
             _identityService = identityService;
         }
 
-        public async Task<(Result, string)> Handle(CreateRegisterCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(CreateRegisterCommand request, CancellationToken cancellationToken)
         {
             var result = await _identityService.CreateUserAsync(request.UserName, request.Password);
 
-            return (result.Result, result.UserId);
+            return result;
         }
     }
 }

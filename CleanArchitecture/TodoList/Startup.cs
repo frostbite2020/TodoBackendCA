@@ -1,6 +1,7 @@
 using Application;
 using FluentValidation.AspNetCore;
 using Infrastructure;
+using Infrastructure.Identity.Entities;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,6 +31,8 @@ namespace TodoList
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
+
             services.AddApplication();
             services.AddInfrastructure(Configuration);
             services.AddHttpContextAccessor();
@@ -45,7 +48,6 @@ namespace TodoList
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
-            services.AddSwaggerGen();
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = false;
@@ -80,6 +82,7 @@ namespace TodoList
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
