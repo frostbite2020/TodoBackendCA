@@ -39,7 +39,6 @@ namespace Infrastructure.Identity
             var user = new ApplicationUser
             {
                 UserName = userName,
-                Email = userName,
             };
 
             var result = await _userManager.CreateAsync(user, password);

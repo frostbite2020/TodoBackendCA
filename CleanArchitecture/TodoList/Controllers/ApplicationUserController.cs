@@ -1,4 +1,5 @@
-﻿using Infrastructure.Identity.Commands.CreateRegister;
+﻿using Application.Common.Models;
+using Infrastructure.Identity.Commands.CreateRegister;
 using Infrastructure.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,28 +10,17 @@ using System.Threading.Tasks;
 
 namespace TodoList.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ApplicationUserController : ControllerBase
-    {
-        private UserManager<ApplicationUser> _userManager;
 
-        public ApplicationUserController(UserManager<ApplicationUser> userManager)
+    public class ApplicationUserController : ApiControllerBase
+    {
+        public ApplicationUserController()
         {
-            _userManager = userManager;
         }
         [HttpPost]
         [Route("Register")]
-        public async Task<Object> CreateRegister(ApplicationUserModel model)
+        public async Task<(Result, string)> CreateRegister(CreateRegisterCommand command)
         {
-            var application = new ApplicationUser
-            {
-                UserName = model.UserName
-            };
-            var result = await _userManager.CreateAsync(application, model.Password);
-
-            return Ok(result);
-/*            return await Mediator.Send(command);
-*/      }
+            return await Mediator.Send(command);
+        }
     }
 }

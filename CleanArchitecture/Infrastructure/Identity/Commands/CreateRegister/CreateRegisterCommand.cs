@@ -1,4 +1,5 @@
-﻿using Infrastructure.Identity.Entities;
+﻿using Application.Common.Models;
+using Infrastructure.Identity.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -10,29 +11,26 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Identity.Commands.CreateRegister
 {
-    public class CreateRegisterCommand : IRequest<string>
+    public class CreateRegisterCommand : IRequest<(Result, string)>
     {
         public string UserName { get; set; }
         public string Password { get; set; }
 
     }
-    public class CreateRegisterCommandHandler : IRequestHandler<CreateRegisterCommand, string>
+    public class CreateRegisterCommandHandler : IRequestHandler<CreateRegisterCommand, (Result, string)>
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IdentityService _identityService;
 
-        public CreateRegisterCommandHandler(UserManager<ApplicationUser> userManager)
+        public CreateRegisterCommandHandler(IdentityService identityService)
         {
-            _userManager = userManager;
+            _identityService = identityService;
         }
 
-        public async Task<string> Handle(CreateRegisterCommand request, CancellationToken cancellationToken)
+        public async Task<(Result, string)> Handle(CreateRegisterCommand request, CancellationToken cancellationToken)
         {
-            var application = new ApplicationUser();
-            application.UserName = request.UserName;
-            
-            await _userManager.CreateAsync(application, request.Password);
+            var result = await _identityService.CreateUserAsync(request.UserName, request.Password);
 
-            return application.Id;
+            return (result.Result, result.UserId);
         }
     }
 }
