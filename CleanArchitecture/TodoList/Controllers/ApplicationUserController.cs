@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 
 namespace TodoList.Controllers
 {
-    public class ApplicationUserController : ApiControllerBase
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ApplicationUserController : ControllerBase
     {
         private UserManager<ApplicationUser> _userManager;
 
@@ -23,9 +25,7 @@ namespace TodoList.Controllers
         {
             var application = new ApplicationUser
             {
-                UserName = model.UserName,
-                Email = model.Email,
-                FullName = model.FullName
+                UserName = model.UserName
             };
             var result = await _userManager.CreateAsync(application, model.Password);
 

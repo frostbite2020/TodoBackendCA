@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Identity.Entities
 {
-    public class ApplicationUserModel
+    public class LoginModel
     {
         public string UserName { get; set; }
         public string Password { get; set; }

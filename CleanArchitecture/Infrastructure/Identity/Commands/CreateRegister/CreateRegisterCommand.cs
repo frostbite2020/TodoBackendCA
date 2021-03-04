@@ -14,8 +14,6 @@ namespace Infrastructure.Identity.Commands.CreateRegister
     {
         public string UserName { get; set; }
         public string Password { get; set; }
-        public string Email { get; set; }
-        public string FullName { get; set; }
 
     }
     public class CreateRegisterCommandHandler : IRequestHandler<CreateRegisterCommand, string>
@@ -31,8 +29,6 @@ namespace Infrastructure.Identity.Commands.CreateRegister
         {
             var application = new ApplicationUser();
             application.UserName = request.UserName;
-            application.Email = request.Email;
-            application.FullName = request.FullName;
             
             await _userManager.CreateAsync(application, request.Password);
 
