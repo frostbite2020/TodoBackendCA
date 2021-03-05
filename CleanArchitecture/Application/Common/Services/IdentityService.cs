@@ -1,18 +1,16 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Extensions;
+using Application.Common.Interfaces;
 using Application.Common.Models;
-using Infrastructure.Identity.Entities;
+using Application.Common.Models.IdentityModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Identity
+namespace Application.Common.Services
 {
-    public class IdentityService :  IIdentityService
+    public class IdentityService : IIdentityService
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserClaimsPrincipalFactory<ApplicationUser> _userClaimsPrincipalFactory;
@@ -34,16 +32,17 @@ namespace Infrastructure.Identity
 
             return user.UserName;
         }
-        public async Task<string> CreateUserAsync(string userName, string password)
+        public async Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password, string role)
         {
+            role = "User";
             var user = new ApplicationUser
             {
-                UserName = userName,
+                UserName = userName
             };
 
-            await _userManager.CreateAsync(user, password);
-
-            return user.Id;
+            var result = await _userManager.CreateAsync(user, password);
+            await _userManager.AddToRoleAsync(user, role);
+            return (result.ToApplicationResult(), user.Id);
         }
 
         public async Task<bool> IsInRoleAsync(string userId, string role)

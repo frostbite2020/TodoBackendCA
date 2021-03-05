@@ -1,8 +1,4 @@
 ﻿using Application.Common.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.Common.Interfaces
@@ -15,7 +11,7 @@ namespace Application.Common.Interfaces
 
         Task<bool> AuthorizeAsync(string userId, string policyName);
 
-        Task<string> CreateUserAsync(string userName, string password);
+        Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password, string role);
 
         Task<Result> DeleteUserAsync(string userId);
     }

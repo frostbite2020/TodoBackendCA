@@ -1,5 +1,4 @@
-﻿using Application.Common.Exceptions;
-using Application.TodoCategories.Commands.DeleteTodoCategory;
+﻿using Application.TodoCategories.Commands.DeleteTodoCategory;
 using Application.TodoCategories.Commands.UpdateTodoCategory;
 using Application.TodoCategories.Queries.ExportTodoCategory;
 using Application.TodoCategories.Queries.GetTodoCategory;

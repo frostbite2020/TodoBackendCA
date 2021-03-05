@@ -5,9 +5,6 @@ using Application.TodoItems.Commands.UpdateTodoItemDetail;
 using Application.TodoItems.Queries.GetTodoItemsWithPagination;
 using Application.TodoLists.Commands.CreateTodoList;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace TodoList.Controllers
