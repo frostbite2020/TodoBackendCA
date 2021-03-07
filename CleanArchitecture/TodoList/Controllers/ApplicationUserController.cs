@@ -1,4 +1,5 @@
-﻿using Application.ApplicationUsers.Commands.RegistrationUser;
+﻿using Application.ApplicationUsers.Commands.LoginUser;
+using Application.ApplicationUsers.Commands.RegistrationUser;
 using Application.Common.Models.IdentityModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -7,8 +8,6 @@ using System.Threading.Tasks;
 
 namespace TodoList.Controllers
 {
-    /*[Controller]
-    [Route("api/[controller]")]*/
     public class ApplicationUserController : ApiControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -29,6 +28,12 @@ namespace TodoList.Controllers
             return await Mediator.Send(command);
         }
 
+        [HttpPost]
+        [Route("Login")]
+        public async Task<string> LoginMethod(LoginUsersCommand command)
+        {
+            return await Mediator.Send(command);
+        }
         /*[HttpPost]
         [Route("Register")]
         public async Task<Object> CreateRegister(ApplicationUserModel model)

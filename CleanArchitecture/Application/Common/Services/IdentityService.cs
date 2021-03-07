@@ -5,7 +5,13 @@ using Application.Common.Models.IdentityModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.Common.Services
@@ -15,15 +21,18 @@ namespace Application.Common.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserClaimsPrincipalFactory<ApplicationUser> _userClaimsPrincipalFactory;
         private readonly IAuthorizationService _authorizationService;
+        private readonly ApplicationSettings _appSettings;
 
         public IdentityService(
             UserManager<ApplicationUser> userManager,
             IUserClaimsPrincipalFactory<ApplicationUser> userClaimsPrincipalFactory,
-            IAuthorizationService authorizationService)
+            IAuthorizationService authorizationService,
+            IOptions<ApplicationSettings> appSettings)
         {
             _userManager = userManager;
             _userClaimsPrincipalFactory = userClaimsPrincipalFactory;
             _authorizationService = authorizationService;
+            _appSettings = appSettings.Value;
         }
 
         public async Task<string> GetUserNameAsync(string userId)
@@ -80,6 +89,39 @@ namespace Application.Common.Services
             var result = await _userManager.DeleteAsync(user);
 
             return result.ToApplicationResult();
+        }
+
+        //Login
+
+        public async Task<string> LoginAsync(string userName, string password)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            var result = await _userManager.CheckPasswordAsync(user, password);
+            if(user != null && result)
+            {
+                var role = await _userManager.GetRolesAsync(user);
+                IdentityOptions _options = new IdentityOptions();
+
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                        new Claim("UserId", user.Id.ToString()),
+                        new Claim(_options.ClaimsIdentity.RoleClaimType, role.FirstOrDefault())
+                    }),
+                    Expires = DateTime.UtcNow.AddDays(7),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
+                };
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var securityKey = tokenHandler.CreateToken(tokenDescriptor);
+                var token = tokenHandler.WriteToken(securityKey);
+                return token;
+            }
+            else
+            {
+                return "UserName atau Password Salah!";
+            }
+
         }
     }
 }

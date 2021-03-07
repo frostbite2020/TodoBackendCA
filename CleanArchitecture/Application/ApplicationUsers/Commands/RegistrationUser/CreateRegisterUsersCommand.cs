@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Application.Common.Models;
 using Application.Common.Models.IdentityModels;
 using MediatR;
 using System.Threading;
@@ -24,10 +25,6 @@ namespace Application.ApplicationUsers.Commands.RegistrationUser
         public async Task<string> Handle(CreateRegisterUsersCommand request, CancellationToken cancellationToken)
         {
             request.Role = "User";
-            var application = new ApplicationUser()
-            {
-                UserName = request.UserName
-            };
 
             var result = await _identityService.CreateUserAsync(request.UserName, request.Password, request.Role);
 
