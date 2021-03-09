@@ -33,7 +33,7 @@ namespace TodoList
             services.AddApplication();
             services.AddInfrastructure(Configuration);
             services.AddHttpContextAccessor();
-
+            services.AddDatabaseDeveloperPageExceptionFilter() ;
 
             services.AddHealthChecks()
                 .AddDbContextCheck<ApplicationDbContext>();

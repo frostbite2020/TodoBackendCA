@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Domain.Entities
 {
-    public class TodoItem : AuditableEntity, IHasDomainEvent
+    public class TodoItem : AuditableEntity
     {
         public int Id { get; set; }
         public TodoCategory Category { get; set; }

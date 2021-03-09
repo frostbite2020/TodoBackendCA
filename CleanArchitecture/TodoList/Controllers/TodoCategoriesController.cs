@@ -2,12 +2,14 @@
 using Application.TodoCategories.Commands.UpdateTodoCategory;
 using Application.TodoCategories.Queries.ExportTodoCategory;
 using Application.TodoCategories.Queries.GetTodoCategory;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using TodoList.Application.TodoCategories.Commands.CreateTodoCategory;
 
 namespace TodoList.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class TodoCategoriesController : ApiControllerBase
     {
         [HttpGet]

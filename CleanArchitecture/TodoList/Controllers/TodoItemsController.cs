@@ -4,11 +4,13 @@ using Application.TodoItems.Commands.UpdateTodoItem;
 using Application.TodoItems.Commands.UpdateTodoItemDetail;
 using Application.TodoItems.Queries.GetTodoItemsWithPagination;
 using Application.TodoLists.Commands.CreateTodoList;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace TodoList.Controllers
 {
+    [Authorize(Roles = "Admin, User")]
     public class TodoItemsController : ApiControllerBase
     {
         [HttpGet]

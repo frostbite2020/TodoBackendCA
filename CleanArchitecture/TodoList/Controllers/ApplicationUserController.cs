@@ -1,5 +1,9 @@
-﻿using Application.ApplicationUsers.Commands.LoginUser;
+﻿using Application.ApplicationUsers.Commands.AuthorizeUser;
+using Application.ApplicationUsers.Commands.DeleteUser;
+using Application.ApplicationUsers.Commands.LoginUser;
 using Application.ApplicationUsers.Commands.RegistrationUser;
+using Application.ApplicationUsers.Queries.GetUser;
+using Application.Common.Models;
 using Application.Common.Models.IdentityModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +25,14 @@ namespace TodoList.Controllers
             _appSettings = appSettings.Value;
 
         }
+
+        [HttpGet]
+        [Route("UserName")]
+        public async Task<ActionResult<bool>> GetUserName(GetUserQuery query)
+        {
+            return await Mediator.Send();
+        }
+
         [HttpPost]
         [Route("Register")]
         public async Task<string> CreateRegister(CreateRegisterUsersCommand command)
@@ -34,6 +46,20 @@ namespace TodoList.Controllers
         {
             return await Mediator.Send(command);
         }
+
+        [HttpPost]
+        [Route("Authorize")]
+        public async Task<bool> AuthorizeMethod(AuthorizeUsersCommand command)
+        {
+            return await Mediator.Send(command);
+        }
+        [HttpDelete("{userId}")]
+        public async Task<Result> DeleteUser(DeleteUsersCommand command)
+        {
+            return await Mediator.Send(command);
+        }
+
+
         /*[HttpPost]
         [Route("Register")]
         public async Task<Object> CreateRegister(ApplicationUserModel model)
