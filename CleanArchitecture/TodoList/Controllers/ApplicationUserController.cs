@@ -26,12 +26,12 @@ namespace TodoList.Controllers
 
         }
 
-        [HttpGet]
+        /*[HttpGet]
         [Route("UserName")]
-        public async Task<ActionResult<bool>> GetUserName(GetUserQuery query)
+        public async Task<ActionResult> GetUserName([FromQuery]GetUserQuery query)
         {
-            return await Mediator.Send();
-        }
+            return await Mediator.Send(query.UserId);
+        }*/
 
         [HttpPost]
         [Route("Register")]

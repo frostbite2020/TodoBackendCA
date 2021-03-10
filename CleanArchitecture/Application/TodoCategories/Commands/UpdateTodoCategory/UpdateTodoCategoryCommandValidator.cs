@@ -1,10 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,16 +16,16 @@ namespace Application.TodoCategories.Commands.UpdateTodoCategory
             _context = context;
 
             RuleFor(v => v.CategoryTitle)
-                .NotEmpty().WithMessage("This field is required")
-                .MaximumLength(200).WithMessage("Title must not be exceed 200 characters")
-                .MustAsync(BeUniqueCategoryTitle).WithMessage("The specified category title alredy exists.");
+                .NotEmpty().WithMessage("Title is required.")
+                .MaximumLength(200).WithMessage("Title must not exceed 200 characters.")
+                .MustAsync(BeUniqueTitle).WithMessage("The specified title already exists.");
         }
-        
-        public async Task<bool> BeUniqueCategoryTitle(UpdateTodoCategoryCommand model, string categoryTitle, CancellationToken cancellationToken)
+
+        public async Task<bool> BeUniqueTitle(UpdateTodoCategoryCommand model, string categoryTitle, CancellationToken cancellationToken)
         {
             return await _context.TodoCategories
-                .Where(v => v.Id == model.Id)
-                .AllAsync(v => v.CategoryTitle != categoryTitle);
-        } 
+                .Where(l => l.Id != model.Id)
+                .AllAsync(l => l.CategoryTitle != categoryTitle);
+        }
     }
 }

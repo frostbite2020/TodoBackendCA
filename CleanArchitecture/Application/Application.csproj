@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ApplicationUsers\Queries\" />
     <Folder Include="TodoCategories\Commands\PurgeTodoCategory\" />
   </ItemGroup>
 

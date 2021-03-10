@@ -43,7 +43,7 @@ namespace Application.Common.Services
         }
         public async Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password, string role)
         {
-            role = "User";
+            role = "Admin";
             var user = new ApplicationUser
             {
                 UserName = userName

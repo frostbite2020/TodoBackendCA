@@ -24,7 +24,7 @@ namespace Application.ApplicationUsers.Commands.RegistrationUser
 
         public async Task<string> Handle(CreateRegisterUsersCommand request, CancellationToken cancellationToken)
         {
-            request.Role = "User";
+            request.Role = "Admin";
 
             var result = await _identityService.CreateUserAsync(request.UserName, request.Password, request.Role);
 

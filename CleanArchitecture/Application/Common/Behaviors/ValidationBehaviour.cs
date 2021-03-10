@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
 using MediatR;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ValidationException = Application.Common.Exceptions.ValidationException;
+
 
 namespace Application.Common.Behaviors
 {
@@ -24,9 +24,9 @@ namespace Application.Common.Behaviors
             if (_validators.Any())
             {
                 var context = new ValidationContext<TRequest>(request);
-                var validationResult = await Task.WhenAll(_validators.Select(v => v.ValidateAsync(context, cancellationToken)));
 
-                var failures = validationResult.SelectMany(r => r.Errors).Where(f => f != null).ToList();
+                var validationResults = await Task.WhenAll(_validators.Select(v => v.ValidateAsync(context, cancellationToken)));
+                var failures = validationResults.SelectMany(r => r.Errors).Where(f => f != null).ToList();
 
                 if (failures.Count != 0)
                     throw new ValidationException(failures);

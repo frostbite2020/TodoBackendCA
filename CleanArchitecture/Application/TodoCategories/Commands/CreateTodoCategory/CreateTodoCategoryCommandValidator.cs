@@ -19,14 +19,15 @@ namespace TodoList.Application.TodoCategories.Commands.CreateTodoCategory
             _context = context;
 
             RuleFor(v => v.CategoryTitle)
-                .NotEmpty().WithMessage("This field is required")
-                .MaximumLength(200).WithMessage("Category title must not exceed 200 characters")
-                .MustAsync(BeUniqueCategoryTitle).WithMessage("The spesified title alredy exist");
+                .NotEmpty().WithMessage("Title is required.")
+                .MaximumLength(200).WithMessage("Title must not exceed 200 characters.")
+                .MustAsync(BeUniqueTitle).WithMessage("The specified title already exists.");
         }
-        public async Task<bool> BeUniqueCategoryTitle(string categoryTitle, CancellationToken cancellationToken)
+
+        public async Task<bool> BeUniqueTitle(string categoryTitle, CancellationToken cancellationToken)
         {
             return await _context.TodoCategories
-                .AllAsync(v => v.CategoryTitle != categoryTitle);
+                .AllAsync(l => l.CategoryTitle != categoryTitle);
         }
 
     }
