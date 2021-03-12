@@ -34,7 +34,7 @@ namespace Application.IntegrationTests.TodoItems.Commands
             });
             var itemId = await SendAsync(new CreateTodoItemCommand
             {
-                ListId = categoryId,
+                CategoryId = categoryId,
                 ActivityTitle = "Belajar Sejarah"
             });
 

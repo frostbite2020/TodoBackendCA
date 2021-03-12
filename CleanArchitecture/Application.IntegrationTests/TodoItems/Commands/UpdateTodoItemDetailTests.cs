@@ -36,14 +36,14 @@ namespace Application.IntegrationTests.TodoItems.Commands
 
             var itemId = await SendAsync(new CreateTodoItemCommand
             {
-                ListId = categoryId,
+                CategoryId = categoryId,
                 ActivityTitle = "Belajar Sejarah"
             });
 
             var command = new UpdateTodoItemDetailCommand()
             {
                 Id = itemId,
-                ListId = categoryId,
+                CategoryId = categoryId,
                 Note = "Ini note ubah detail ya",
                 Priority = PriorityLevel.Medium
             };
@@ -53,7 +53,7 @@ namespace Application.IntegrationTests.TodoItems.Commands
             var item = await FindAsync<TodoItem>(itemId);
 
             item.Should().NotBeNull();
-            item.ListId.Should().Be(command.ListId);
+            item.CategoryId.Should().Be(command.CategoryId);
             item.Note.Should().Be(command.Note);
             item.Priority.Should().Be(command.Priority);
         }

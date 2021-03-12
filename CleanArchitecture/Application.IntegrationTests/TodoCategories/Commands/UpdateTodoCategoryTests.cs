@@ -27,7 +27,7 @@ namespace Application.IntegrationTests.TodoCategories.Commands
         [Test]
         public async Task ShouldRequireUniqueTitle()
         {
-            var listId = await SendAsync(new CreateTodoCategoryCommand
+            var categoryId = await SendAsync(new CreateTodoCategoryCommand
             {
                 CategoryTitle = "New List"
             });
@@ -39,7 +39,7 @@ namespace Application.IntegrationTests.TodoCategories.Commands
 
             var command = new UpdateTodoCategoryCommand
             {
-                Id = listId,
+                Id = categoryId,
                 CategoryTitle = "Other List"
             };
 
@@ -54,20 +54,20 @@ namespace Application.IntegrationTests.TodoCategories.Commands
         {
             var userId = await RunAsDefaultUserAsync();
 
-            var listId = await SendAsync(new CreateTodoCategoryCommand
+            var categoryId = await SendAsync(new CreateTodoCategoryCommand
             {
                 CategoryTitle = "New List"
             });
 
             var command = new UpdateTodoCategoryCommand
             {
-                Id = listId,
+                Id = categoryId,
                 CategoryTitle = "Updated List Title"
             };
 
             await SendAsync(command);
 
-            var list = await FindAsync<TodoCategory>(listId);
+            var list = await FindAsync<TodoCategory>(categoryId);
 
             list.CategoryTitle.Should().Be(command.CategoryTitle);
         }

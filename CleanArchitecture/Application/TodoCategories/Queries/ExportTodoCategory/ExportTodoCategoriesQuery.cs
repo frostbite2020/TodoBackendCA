@@ -14,7 +14,7 @@ namespace Application.TodoCategories.Queries.ExportTodoCategory
 {
     public class ExportTodoCategoriesQuery : IRequest<ExportTodoCategoriesVm>
     {
-        public int ListId { get; set; }
+        public int CategoryId { get; set; }
 
     }
 
@@ -35,7 +35,7 @@ namespace Application.TodoCategories.Queries.ExportTodoCategory
         {
             var vm = new ExportTodoCategoriesVm();
             var records = await _context.TodoItems
-                .Where(x => x.ListId == request.ListId)
+                .Where(x => x.CategoryId == request.CategoryId)
                 .ProjectTo<TodoCategoryItemFileRecord>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 

@@ -9,7 +9,7 @@ namespace Application.TodoItems.Queries.GetTodoItemsWithPagination
     {
         public GetTodoItemsWithPaginationQueryValidator()
         {
-            RuleFor(x => x.ListId)
+            RuleFor(x => x.CategoryId)
                 .NotNull()
                 .NotEmpty().WithMessage("This field is required");
 

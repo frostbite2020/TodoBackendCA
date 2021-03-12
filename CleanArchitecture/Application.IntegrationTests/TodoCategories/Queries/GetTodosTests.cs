@@ -40,9 +40,7 @@ namespace Application.IntegrationTests.TodoCategories.Queries
                     },
             });
 
-            var query = new GetTodosQuery();
-
-            var result = await SendAsync(query);
+            var result = await SendAsync(new GetTodosQuery { });
 
             result.Categories.Should().HaveCount(1);
             result.Categories.First().Lists.Should().HaveCount(7);

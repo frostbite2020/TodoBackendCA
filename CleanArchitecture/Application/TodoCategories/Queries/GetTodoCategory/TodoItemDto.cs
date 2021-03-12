@@ -11,7 +11,7 @@ namespace Application.TodoCategories.Queries.GetTodoCategory
     {
         public int Id { get; set; }
 
-        public int ListId { get; set; }
+        public int CategoryId { get; set; }
 
         public string ActivityTitle { get; set; }
 

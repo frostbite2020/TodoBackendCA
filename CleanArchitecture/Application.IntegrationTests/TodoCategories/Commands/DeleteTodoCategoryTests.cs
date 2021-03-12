@@ -27,17 +27,17 @@ namespace Application.IntegrationTests.TodoCategories.Commands
         [Test]
         public async Task ShouldDeleteTodoCategory()
         {
-            var listId = await SendAsync(new CreateTodoCategoryCommand
+            var categoryId = await SendAsync(new CreateTodoCategoryCommand
             {
                 CategoryTitle = "Test"
             });
 
             await SendAsync(new DeleteTodoCategoryCommand
             {
-                Id = listId
+                Id = categoryId
             });
 
-            var list = await FindAsync<TodoCategory>(listId);
+            var list = await FindAsync<TodoCategory>(categoryId);
             list.Should().BeNull();
         }
     }

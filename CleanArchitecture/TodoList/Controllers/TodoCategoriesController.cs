@@ -20,7 +20,7 @@ namespace TodoList.Controllers
         [HttpGet("{id}")]
         public async Task<FileResult> Get(int id)
         {
-            var vm = await Mediator.Send(new ExportTodoCategoriesQuery { ListId = id });
+            var vm = await Mediator.Send(new ExportTodoCategoriesQuery { CategoryId = id });
 
             return File(vm.Content, vm.ContentType, vm.FileName);
         }

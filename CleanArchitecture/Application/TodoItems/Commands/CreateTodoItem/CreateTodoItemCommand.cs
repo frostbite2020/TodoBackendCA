@@ -12,7 +12,7 @@ namespace Application.TodoLists.Commands.CreateTodoList
 {
     public class CreateTodoItemCommand : IRequest<int>
     {
-        public int ListId { get; set; }
+        public int CategoryId { get; set; }
 
         public string ActivityTitle { get; set; }
     }
@@ -30,7 +30,7 @@ namespace Application.TodoLists.Commands.CreateTodoList
         {
             var entity = new TodoItem
             {
-                ListId = request.ListId,
+                CategoryId = request.CategoryId,
                 ActivityTitle = request.ActivityTitle,
                 Done = false
             };

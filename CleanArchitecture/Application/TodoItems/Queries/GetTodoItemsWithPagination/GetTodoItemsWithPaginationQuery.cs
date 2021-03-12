@@ -16,7 +16,7 @@ namespace Application.TodoItems.Queries.GetTodoItemsWithPagination
 {
     public class GetTodoItemsWithPaginationQuery : IRequest<PaginatedList<TodoItemDto>>
     {
-        public int ListId { get; set; }
+        public int CategoryId { get; set; }
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
     }
@@ -35,7 +35,7 @@ namespace Application.TodoItems.Queries.GetTodoItemsWithPagination
         public async Task<PaginatedList<TodoItemDto>> Handle(GetTodoItemsWithPaginationQuery request, CancellationToken cancellationToken)
         {
             return await _context.TodoItems
-                .Where(x => x.ListId == request.ListId)
+                .Where(x => x.CategoryId == request.CategoryId)
                 .OrderBy(x => x.ActivityTitle)
                 .ProjectTo<TodoItemDto>(_mapper.ConfigurationProvider)
                 .PaginatedListAsync(request.PageNumber, request.PageSize); ;

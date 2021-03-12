@@ -11,7 +11,7 @@ namespace Domain.Entities
     {
         public int Id { get; set; }
         public TodoCategory Category { get; set; }
-        public int ListId { get; set; }
+        public int CategoryId { get; set; }
         public string ActivityTitle { get; set; }
         public string Note { get; set; }
         public PriorityLevel Priority { get; set; }

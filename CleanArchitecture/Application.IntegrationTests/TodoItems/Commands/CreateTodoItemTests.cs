@@ -26,14 +26,14 @@ namespace Application.IntegrationTests.TodoItems.Commands
         [Test]
         public async Task ShouldCreateTodoItem()
         {
-            var listId = await SendAsync(new CreateTodoCategoryCommand
+            var categoryId = await SendAsync(new CreateTodoCategoryCommand
             {
                 CategoryTitle = "Belajar"
             });
 
             var command = new CreateTodoItemCommand
             {
-                ListId = listId,
+                CategoryId = categoryId,
                 ActivityTitle = "Belajar Membaca"
             };
 
@@ -42,7 +42,7 @@ namespace Application.IntegrationTests.TodoItems.Commands
             var item = await FindAsync<TodoItem>(itemId);
 
             item.Should().NotBeNull();
-            item.ListId.Should().Be(command.ListId);
+            item.CategoryId.Should().Be(command.CategoryId);
             item.ActivityTitle.Should().Be(command.ActivityTitle);
 
         }
