@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Events;
 using MediatR;
 using System;
@@ -15,6 +16,8 @@ namespace Application.TodoLists.Commands.CreateTodoList
         public int CategoryId { get; set; }
 
         public string ActivityTitle { get; set; }
+        public string Note { get; set; }
+        public PriorityLevel Priority { get; set; }
     }
 
     public class CreateTodoItemCommandHandler : IRequestHandler<CreateTodoItemCommand, int>
@@ -32,6 +35,8 @@ namespace Application.TodoLists.Commands.CreateTodoList
             {
                 CategoryId = request.CategoryId,
                 ActivityTitle = request.ActivityTitle,
+                Note = request.Note,
+                Priority = request.Priority,
                 Done = false
             };
 

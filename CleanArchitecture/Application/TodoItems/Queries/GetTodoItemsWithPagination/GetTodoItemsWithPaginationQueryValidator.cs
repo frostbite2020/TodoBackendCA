@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Domain.Enums;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,6 +19,33 @@ namespace Application.TodoItems.Queries.GetTodoItemsWithPagination
 
             RuleFor(x => x.PageSize)
                 .GreaterThanOrEqualTo(1).WithMessage("PageSize at least greater than or equal to 1.");
+
+            /*RuleFor(x => x.FilterByPriority)
+                .Must(BeInRange).WithMessage("Priority u input is not in exist");
+
+            RuleFor(x => x.Sorting)
+                .Must(SortingRule).WithMessage("That kind of sorting is not available");*/
+        }
+
+        private bool BeInRange(PriorityLevel priority)
+        {
+            if (priority == 0
+                || priority == PriorityLevel.None
+                || priority == PriorityLevel.Low
+                || priority == PriorityLevel.Medium
+                || priority == PriorityLevel.High) return true;
+
+            return false;
+        }
+
+        public bool SortingRule(SortingProperties sorting)
+        {
+            if (sorting == 0
+                || sorting == SortingProperties.ByName
+                || sorting == SortingProperties.DescentByName
+                || sorting == SortingProperties.ByPriority) return true;
+
+            return false;
         }
     }
 }

@@ -13,6 +13,7 @@ namespace Application.TodoItems.Commands.UpdateTodoItemDetail
     public class UpdateTodoItemDetailCommand : IRequest
     {
         public int Id { get; set; }
+        public string ActivityTitle { get; set; }
         public int CategoryId { get; set; }
         public PriorityLevel Priority { get; set; }
         public string Note { get; set; }
@@ -35,6 +36,7 @@ namespace Application.TodoItems.Commands.UpdateTodoItemDetail
                 throw new NotFoundException(nameof(TodoItems), request.Id);
             }
 
+            entity.ActivityTitle = request.ActivityTitle;
             entity.CategoryId = request.CategoryId;
             entity.Priority = request.Priority;
             entity.Note = request.Note;

@@ -20,8 +20,8 @@ namespace Domain.Entities
         {
             get => _done;
             set
-            { 
-                if( value == true && value != false)
+            {
+                if (value == true && value != false)
                 {
                     DomainEvents.Add(new TodoItemCompletedEvent(this));
                 }

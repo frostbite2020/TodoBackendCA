@@ -32,7 +32,7 @@ namespace Application.TodoCategories.Commands.UpdateTodoCategory
             {
                 throw new NotFoundException(nameof(TodoCategory), request.Id);
             }
-
+            entity.Id = request.Id;
             entity.CategoryTitle = request.CategoryTitle;
 
             await _context.SaveChangesAsync(cancellationToken);

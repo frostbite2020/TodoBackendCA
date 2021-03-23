@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Common.Models.UserModels;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace Application.Common.Interfaces
         DbSet<TodoCategory> TodoCategories { get; set; }
 
         DbSet<TodoItem> TodoItems { get; set; }
+        DbSet<UserProperties> UserProps { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

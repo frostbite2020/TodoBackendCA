@@ -1,6 +1,5 @@
 ﻿using Application.Common.Extensions;
-using Application.Common.Interfaces;
-using Application.Common.Models.IdentityModels;
+using Application.Common.Models.UserModels;
 using Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
@@ -35,8 +34,8 @@ public class Testing
 
         _configuration = builder.Build();
 
-        var startup = new Startup(_configuration);
-
+/*        var startup = new Startup(_configuration);
+*/
         var services = new ServiceCollection();
 
         services.AddSingleton(Mock.Of<IWebHostEnvironment>(w =>
@@ -45,8 +44,8 @@ public class Testing
 
         services.AddLogging();
 
-        startup.ConfigureServices(services);
-
+/*        startup.ConfigureServices(services);
+*/
         _scopeFactory = services.BuildServiceProvider().GetService<IServiceScopeFactory>();
 
         _checkpoint = new Checkpoint
@@ -76,7 +75,7 @@ public class Testing
 
     public static async Task<string> RunAsDefaultUserAsync()
     {
-        return await RunAsUserAsync("test@local", "Testing1234!", new string[] { });
+        return await RunAsUserAsync("rafirafi", "rafirafi", new string[] { "User" });
     }
 
     public static async Task<string> RunAsAdministratorAsync()
@@ -88,9 +87,9 @@ public class Testing
     {
         using var scope = _scopeFactory.CreateScope();
 
-        var userManager = scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
+        var userManager = scope.ServiceProvider.GetService<UserManager<UserProperties>>();
 
-        var user = new ApplicationUser { UserName = userName, Email = userName };
+        var user = new UserProperties { Username = userName };
 
         var result = await userManager.CreateAsync(user, password);
 
@@ -106,12 +105,12 @@ public class Testing
             await userManager.AddToRolesAsync(user, roles);
         }
 
-        if (result.Succeeded)
+        /*if (result.Succeeded)
         {
             _currentUserId = user.Id;
 
             return _currentUserId;
-        }
+        }*/
 
         var errors = string.Join(Environment.NewLine, result.ToApplicationResult().Errors);
 

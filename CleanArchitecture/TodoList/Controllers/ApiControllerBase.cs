@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace TodoList.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/")]
     public class ApiControllerBase : ControllerBase
     {
         private ISender _mediator;

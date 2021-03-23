@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces;
+﻿/*using Application.Common.Interfaces;
 using Application.Common.Security;
 using MediatR;
 using System;
@@ -82,3 +82,4 @@ namespace Application.Common.Behaviors
         }
     }
 }
+*/

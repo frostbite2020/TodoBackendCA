@@ -1,33 +1,36 @@
 ﻿using Application.Common.Interfaces;
-using Application.Common.Models.IdentityModels;
+using Application.Common.Models.UserModels;
 using Domain.Common;
 using Domain.Entities;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Infrastructure
 {
-    public class ApplicationDbContext : IdentityDbContext, IApplicationDbContext
+    public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
+        protected readonly IConfiguration Configuration;
         private readonly IDateTime _dateTime;
         private readonly IDomainEventService _domainEventService;
-
         public ApplicationDbContext(
             DbContextOptions options,
+            IConfiguration configuration,
             IDomainEventService domainEventService,
             IDateTime dateTime) : base(options)
         {
+            Configuration = configuration;
             _domainEventService = domainEventService;
             _dateTime = dateTime;
         }
-
+        
         public DbSet<TodoItem> TodoItems { get; set; }
 
         public DbSet<TodoCategory> TodoCategories { get; set; }
-        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<UserProperties> UserProps { get; set; }
+
 
         /*public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {

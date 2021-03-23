@@ -1,7 +1,9 @@
 ﻿using Application.Common.Models;
 using Application.TodoCategories.Queries.GetTodoCategory;
+using Application.TodoItems.Commands.DeleteTodoItem;
 using Application.TodoItems.Commands.UpdateTodoItem;
 using Application.TodoItems.Commands.UpdateTodoItemDetail;
+using Application.TodoItems.Queries.GetTodoItemById;
 using Application.TodoItems.Queries.GetTodoItemsWithPagination;
 using Application.TodoLists.Commands.CreateTodoList;
 using Microsoft.AspNetCore.Authorization;
@@ -11,11 +13,20 @@ using System.Threading.Tasks;
 namespace TodoList.Controllers
 {
     [Authorize(Roles = "Admin, User")]
+    [Route("item")]
     public class TodoItemsController : ApiControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<PaginatedList<TodoItemDto>>> GetTodoItemsWithPagination([FromQuery]GetTodoItemsWithPaginationQuery query)
+        public async Task<ActionResult<TodoItemVm>> GetTodoItemsWithPagination([FromQuery]GetTodoItemsWithPaginationQuery query)
         {
+            return await Mediator.Send(query);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<TodoItemDto> GetTodoItemsById(int id)
+        {
+            var query = new GetTodoItemIdQuery();
+            query.Id = id;
             return await Mediator.Send(query);
         }
 
@@ -37,13 +48,9 @@ namespace TodoList.Controllers
             return NoContent();
         }
 
-        [HttpPut("[action]")]
+        [HttpPut("update-item-details/{id}")]
         public async Task<ActionResult> UpdateItemDetails(int id, UpdateTodoItemDetailCommand command)
         {
-            if(id != command.Id)
-            {
-                return BadRequest();
-            }
             await Mediator.Send(command);
             return NoContent();
         }
@@ -51,7 +58,7 @@ namespace TodoList.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            await Mediator.Send(new UpdateTodoItemDetailCommand { Id = id });
+            await Mediator.Send(new DeleteTodoItemCommand { Id = id });
 
             return NoContent();
         }
