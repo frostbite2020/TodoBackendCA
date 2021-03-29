@@ -19,7 +19,7 @@ namespace Application.TodoItems.Queries.GetTodoItemsWithPagination
     public class GetTodoItemsWithPaginationQuery : IRequest<TodoItemVm>
     {
         public int CategoryId { get; set; }
-        public string ActivityTitle { get; set; }
+        public string searchByTitle { get; set; }
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
         public SortingProperties Sorting { get; set; }
@@ -86,9 +86,9 @@ namespace Application.TodoItems.Queries.GetTodoItemsWithPagination
                     break;
             }
 
-            if (!string.IsNullOrEmpty(request.ActivityTitle))
+            if (!string.IsNullOrEmpty(request.searchByTitle))
             {
-                todoItem = todoItem.Where(o => o.ActivityTitle.Contains(request.ActivityTitle));
+                todoItem = todoItem.Where(o => o.ActivityTitle.Contains(request.searchByTitle));
             }
 
             //Return
