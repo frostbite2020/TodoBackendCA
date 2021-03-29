@@ -37,7 +37,7 @@ namespace Application.UserManagements.Commands.UserLogin
 
             if(user == null)
             {
-                throw new AppException("Username or Password is incorrect");
+                throw new NotFoundException("Username or Password is incorrect");
             }
 
             var tokenHandler = new JwtSecurityTokenHandler();

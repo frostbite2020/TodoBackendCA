@@ -13,7 +13,6 @@ namespace Application.TodoItems.Commands.UpdateTodoItem
     public class UpdateTodoItemCommand : IRequest
     {
         public int Id { get; set; }
-        public string ActivityTitle { get; set; }
         public bool Done { get; set; }
     }
 
@@ -34,7 +33,6 @@ namespace Application.TodoItems.Commands.UpdateTodoItem
             {
                 throw new NotFoundException(nameof(TodoItem), request.Id);
             }
-            entity.ActivityTitle = request.ActivityTitle;
             entity.Done = request.Done;
 
             await _context.SaveChangesAsync(cancellationToken);

@@ -1,12 +1,10 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Application.Common.Models;
 using Application.Common.Models.UserModels;
-using Application.Common.Models.UserModels.Helpers;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Common.Services
+namespace Infrastructure.Services
 {
     public class UserService : IUserService
     {
@@ -27,7 +25,7 @@ namespace Application.Common.Services
             _mapper = mapper;
         }
 
-        public async Task<UserProperties> Authenticate(string username, string password)
+        public async Task<UserProperty> Authenticate(string username, string password)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 return null;
@@ -60,7 +58,7 @@ namespace Application.Common.Services
             return model;
         }
 
-        public async Task<UserProperties> Create(UserProperties user, string password, CancellationToken cancellationToken)
+        public async Task<UserProperty> Create(UserProperty user, string password, CancellationToken cancellationToken)
         {
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash(password, out passwordHash, out passwordSalt);
@@ -68,7 +66,7 @@ namespace Application.Common.Services
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
-            
+
             _context.UserProps.Add(user);
             await _context.SaveChangesAsync(cancellationToken);
 
@@ -109,7 +107,7 @@ namespace Application.Common.Services
         public async Task<int> Delete(int id, CancellationToken cancellationToken)
         {
             var user = await _context.UserProps.FindAsync(id);
-            if(user != null)
+            if (user != null)
             {
                 _context.UserProps.Remove(user);
                 await _context.SaveChangesAsync(cancellationToken);
@@ -118,12 +116,12 @@ namespace Application.Common.Services
             return user.Id;
         }
 
-        public async Task<UpdateModel> Update(UserProperties userParam, CancellationToken cancellationToken, string password = null)
+        public async Task<UpdateModel> Update(UserProperty userParam, CancellationToken cancellationToken, string password = null)
         {
             var user = await _context.UserProps.FindAsync(userParam.Id);
 
             if (user == null)
-                throw new AppException("User not found");
+                throw new NotFoundException("User not found");
 
             //input change
             user.Username = userParam.Username;
@@ -157,3 +155,4 @@ namespace Application.Common.Services
         }
     }
 }
+

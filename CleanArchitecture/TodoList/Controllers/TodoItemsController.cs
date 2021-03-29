@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace TodoList.Controllers
 {
-    [Authorize(Roles = "Admin, User")]
+    [Authorize]
     [Route("item")]
     public class TodoItemsController : ApiControllerBase
     {
@@ -51,6 +51,10 @@ namespace TodoList.Controllers
         [HttpPut("update-item-details/{id}")]
         public async Task<ActionResult> UpdateItemDetails(int id, UpdateTodoItemDetailCommand command)
         {
+            if (id != command.Id)
+            {
+                return BadRequest();
+            }
             await Mediator.Send(command);
             return NoContent();
         }

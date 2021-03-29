@@ -1,8 +1,10 @@
-﻿using Application.TodoCategories.Commands.DeleteTodoCategory;
+﻿using Application.Common.Models.UserModels;
+using Application.TodoCategories.Commands.DeleteTodoCategory;
 using Application.TodoCategories.Commands.UpdateTodoCategory;
 using Application.TodoCategories.Queries.ExportTodoCategory;
 using Application.TodoCategories.Queries.GetTodoCategory;
 using Application.TodoCategories.Queries.GetTodoCategoryById;
+using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -10,23 +12,22 @@ using TodoList.Application.TodoCategories.Commands.CreateTodoCategory;
 
 namespace TodoList.Controllers
 {
-    [Authorize(Roles = "Admin, User")]
+    [Authorize]
     [Route("category")]
     public class TodoCategoriesController : ApiControllerBase
     {
-        [HttpGet]
-        public async Task<ActionResult<TodosVm>> Get()
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<TodosVm>> Get(int userId)
         {
-            return await Mediator.Send(new GetTodosQuery());
+            var currentUserId = int.Parse(User.Identity.Name);
+            var query = new GetTodosQuery();
+            query.CurrentUserId = userId;
+            if (currentUserId != query.CurrentUserId && !User.IsInRole(Role.Admin))
+                return Forbid();
+            return await Mediator.Send(query);
         }
-        /*[HttpGet("{id}")]
-        public async Task<FileResult> Get(int id)
-        {
-            var vm = await Mediator.Send(new ExportTodoCategoriesQuery { CategoryId = id });
 
-            return File(vm.Content, vm.ContentType, vm.FileName);
-        }*/
-        [HttpGet("{id}")]
+        [HttpGet("category-by-id/{id}")]
         public async Task<ActionResult<TodoCategoryDto>> GetById(int id)
         {
             var query = new GetTodoCategoryIdQuery();

@@ -8,8 +8,6 @@ namespace Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<TodoItem> builder)
         {
-            builder.Ignore(e => e.DomainEvents);
-
             builder.Property(t => t.ActivityTitle)
                 .HasMaxLength(200)
                 .IsRequired();

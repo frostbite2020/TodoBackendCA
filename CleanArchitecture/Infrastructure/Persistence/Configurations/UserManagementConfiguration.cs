@@ -1,17 +1,12 @@
-﻿using Application.Common.Models.UserModels;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Configurations
 {
-    public class UserManagementConfiguration : IEntityTypeConfiguration<UserProperties>
+    public class UserManagementConfiguration : IEntityTypeConfiguration<UserProperty>
     {
-        public void Configure(EntityTypeBuilder<UserProperties> builder)
+        public void Configure(EntityTypeBuilder<UserProperty> builder)
         {
             builder.Property(x => x.PhoneNumber)
                 .HasMaxLength(15);

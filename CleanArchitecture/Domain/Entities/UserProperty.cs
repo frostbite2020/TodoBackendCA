@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Common.Models.UserModels
+namespace Domain.Entities
 {
-    public class UserProperties
+    public class UserProperty
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

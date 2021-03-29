@@ -1,8 +1,9 @@
 ﻿using Application.Common.Mappings;
+using Domain.Entities;
 
 namespace Application.Common.Models.UserModels
 {
-    public class UserModel : IMapFrom<UserProperties>
+    public class UserModel : IMapFrom<UserProperty>
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

@@ -7,10 +7,10 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Application.Common.Services;
 using Application.Common.Models.UserModels.Helpers;
 using System.Threading.Tasks;
 using System;
+using Infrastructure.Persistence;
 
 namespace Infrastructure
 {
@@ -21,15 +21,15 @@ namespace Infrastructure
             
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(
-                        configuration.GetConnectionString("DefaultConnection")));
+                        configuration.GetConnectionString("DefaultConnection"),
+                        b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
 
-            services.AddScoped<IDomainEventService, DomainEventService>();
+            services.AddScoped<IUserService, UserService>();
 
-            services.AddTransient<IDateTime, DateTimeService>();
             services.AddTransient<ICsvFileBuilder, CsvFileBuilder>();
 
             //JWT JasonWattmore Version
@@ -73,8 +73,7 @@ namespace Infrastructure
                 };
             });
 
-            // configure DI for application services
-            services.AddScoped<IUserService, UserService>();
+            
 
             return services;
         }

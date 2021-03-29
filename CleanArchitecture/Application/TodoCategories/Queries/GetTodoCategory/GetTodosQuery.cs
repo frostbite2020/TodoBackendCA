@@ -13,6 +13,7 @@ namespace Application.TodoCategories.Queries.GetTodoCategory
 {
     public class GetTodosQuery : IRequest<TodosVm>
     {
+        public int CurrentUserId { get; set; }
     }
 
     public class GetTodosQueryHandler : IRequestHandler<GetTodosQuery, TodosVm>
@@ -35,6 +36,8 @@ namespace Application.TodoCategories.Queries.GetTodoCategory
                     .ToList(),
 
                 Categories = await _context.TodoCategories
+                    .Include(x => x.UserProperty)
+                    .Where(x => x.UserProperty.Id == request.CurrentUserId)
                     .AsNoTracking()
                     .ProjectTo<TodoCategoryDto>(_mapper.ConfigurationProvider)
                     .OrderBy(t => t.CategoryTitle)

@@ -1,11 +1,7 @@
 ﻿using Application.Common.Interfaces;
-using Application.Common.Models;
 using Application.Common.Models.UserModels;
+using Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -32,7 +28,7 @@ namespace Application.UserManagements.Commands.UserUpdate
 
         public async Task<UpdateModel> Handle(UserUpdateCommand request, CancellationToken cancellationToken)
         {
-            var user = new UserProperties();
+            var user = new UserProperty();
             user.Id = request.Id;
             user.FirstName = request.FirstName;
             user.LastName = request.LastName;

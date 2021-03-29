@@ -17,6 +17,7 @@ namespace TodoList.Filters
             // Register known exception types and handlers.
             _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
             {
+                { typeof(AppException), HandleAppException },
                 { typeof(ValidationException), HandleValidationException },
                 { typeof(NotFoundException), HandleNotFoundException },
                 { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
@@ -48,7 +49,6 @@ namespace TodoList.Filters
 
             HandleUnknownException(context);
         }
-
         private void HandleValidationException(ExceptionContext context)
         {
             var exception = context.Exception as ValidationException;
@@ -74,7 +74,18 @@ namespace TodoList.Filters
 
             context.ExceptionHandled = true;
         }
+        private void HandleAppException(ExceptionContext context)
+        {
+            var details = new ProblemDetails()
+            {
+                Title = "Category Title Alredy Exist!",
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+            };
 
+            context.Result = new BadRequestObjectResult(details);
+
+            context.ExceptionHandled = true;
+        }
         private void HandleNotFoundException(ExceptionContext context)
         {
             var exception = context.Exception as NotFoundException;

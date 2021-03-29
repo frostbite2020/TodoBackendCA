@@ -19,6 +19,7 @@ namespace Application.TodoItems.Queries.GetTodoItemsWithPagination
     public class GetTodoItemsWithPaginationQuery : IRequest<TodoItemVm>
     {
         public int CategoryId { get; set; }
+        public string ActivityTitle { get; set; }
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
         public SortingProperties Sorting { get; set; }
@@ -40,7 +41,7 @@ namespace Application.TodoItems.Queries.GetTodoItemsWithPagination
         {
             var todoItem = from s in _context.TodoItems
                            select s;
-            
+
             //Filter By Priority
             switch (request.FilterByPriority)
             {
@@ -83,6 +84,11 @@ namespace Application.TodoItems.Queries.GetTodoItemsWithPagination
                 default:
                     todoItem = null;
                     break;
+            }
+
+            if (!string.IsNullOrEmpty(request.ActivityTitle))
+            {
+                todoItem = todoItem.Where(o => o.ActivityTitle.Contains(request.ActivityTitle));
             }
 
             //Return

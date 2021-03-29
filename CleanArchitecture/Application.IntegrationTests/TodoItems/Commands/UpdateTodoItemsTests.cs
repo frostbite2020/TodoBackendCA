@@ -19,7 +19,7 @@ namespace Application.IntegrationTests.TodoItems.Commands
         [Test]
         public void ShouldBeRealId()
         {
-            var command = new UpdateTodoItemCommand { Id = 99, ActivityTitle = "New Title" };
+            var command = new UpdateTodoItemCommand { Id = 99 };
 
             FluentActions.Invoking(() =>
                 SendAsync(command)).Should().Throw<NotFoundException>();
@@ -42,7 +42,6 @@ namespace Application.IntegrationTests.TodoItems.Commands
             var command = new UpdateTodoItemCommand
             {
                 Id = itemId,
-                ActivityTitle = "Belajar Sejarah",
                 Done = true
             };
 
@@ -51,7 +50,6 @@ namespace Application.IntegrationTests.TodoItems.Commands
             var item = await FindAsync<TodoItem>(itemId);
 
             item.Should().NotBeNull();
-            item.ActivityTitle.Should().Be(command.ActivityTitle);
             item.Done.Should().Be(command.Done);
         }
     }

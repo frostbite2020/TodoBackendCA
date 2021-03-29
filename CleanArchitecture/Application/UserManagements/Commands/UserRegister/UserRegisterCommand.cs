@@ -1,17 +1,14 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models.UserModels;
 using AutoMapper;
+using Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.UserManagements.Commands.UserRegister
 {
-    public class UserRegisterCommand : IRequest<UserProperties>
+    public class UserRegisterCommand : IRequest<UserProperty>
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -21,7 +18,7 @@ namespace Application.UserManagements.Commands.UserRegister
         public int PhoneNumber { get; set; }
     }
 
-    public class UserRegisterCommandHandler : IRequestHandler <UserRegisterCommand, UserProperties>
+    public class UserRegisterCommandHandler : IRequestHandler <UserRegisterCommand, UserProperty>
     {
         private IUserService _userService;
         private IMapper _mapper;
@@ -32,10 +29,10 @@ namespace Application.UserManagements.Commands.UserRegister
             _mapper = mapper;
         }
 
-        public async Task<UserProperties> Handle(UserRegisterCommand request, CancellationToken cancellationToken)
+        public async Task<UserProperty> Handle(UserRegisterCommand request, CancellationToken cancellationToken)
         {
 
-            var model = new UserProperties();
+            var model = new UserProperty();
             model.FirstName = request.FirstName;
             model.LastName = request.LastName;
             model.Username = request.UserName;

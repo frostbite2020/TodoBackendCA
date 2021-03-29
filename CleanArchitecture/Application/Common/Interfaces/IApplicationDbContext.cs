@@ -11,7 +11,7 @@ namespace Application.Common.Interfaces
         DbSet<TodoCategory> TodoCategories { get; set; }
 
         DbSet<TodoItem> TodoItems { get; set; }
-        DbSet<UserProperties> UserProps { get; set; }
+        DbSet<UserProperty> UserProps { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

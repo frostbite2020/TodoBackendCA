@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Folder Include="TodoCategories\Commands\PurgeTodoCategory\" />
+    <Folder Include="TodoItems\EventHandlers\" />
   </ItemGroup>
 
   <ItemGroup>

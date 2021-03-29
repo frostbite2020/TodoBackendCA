@@ -1,6 +1,6 @@
 ﻿using Application.Common.Extensions;
-using Application.Common.Models.UserModels;
-using Infrastructure;
+using Domain.Entities;
+using Infrastructure.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -87,9 +87,9 @@ public class Testing
     {
         using var scope = _scopeFactory.CreateScope();
 
-        var userManager = scope.ServiceProvider.GetService<UserManager<UserProperties>>();
+        var userManager = scope.ServiceProvider.GetService<UserManager<UserProperty>>();
 
-        var user = new UserProperties { Username = userName };
+        var user = new UserProperty { Username = userName };
 
         var result = await userManager.CreateAsync(user, password);
 

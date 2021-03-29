@@ -1,11 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
 using Domain.Enums;
-using Domain.Events;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -39,8 +35,6 @@ namespace Application.TodoLists.Commands.CreateTodoList
                 Priority = request.Priority,
                 Done = false
             };
-
-            entity.DomainEvents.Add(new TodoItemCreatedEvent(entity));
 
             _context.TodoItems.Add(entity);
 
