@@ -10,6 +10,7 @@ namespace Application.TodoDailys.Queries.GetAllTodoDailys
 {
     public class TodoDailyDto : IMapFrom<TodoDaily>
     {
+        public int Id { get; set; }
         public string TodoDailyActivity { get; set; }
         public bool Check { get; set; }
     }

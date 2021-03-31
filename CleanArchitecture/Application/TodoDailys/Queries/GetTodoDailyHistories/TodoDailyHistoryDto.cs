@@ -12,8 +12,9 @@ namespace Application.TodoDailys.Queries.GetTodoDailyHistories
     public class TodoDailyHistoryDto : IMapFrom<TodoDailyHistory>
     {
         public int Id { get; set; }
+        public string TodoDailyActivity { get; set; }
         public bool CheckStatus { get; set; }
-        public TodoDailyDto TodoDaily { get; set; }
+        public DateTime MadeSince { get; set; }
         public DateTime CheckDate { get; set; }
     }
 }

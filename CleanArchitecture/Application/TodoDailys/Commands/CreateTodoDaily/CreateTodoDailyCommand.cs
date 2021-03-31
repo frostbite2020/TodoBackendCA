@@ -11,26 +11,26 @@ using System.Threading.Tasks;
 
 namespace Application.TodoDailys.Commands.CreateTodoDaily
 {
-    public class CreateTodoDailyCommand : IRequest<TodoDailyDto>
+    public class CreateTodoDailyCommand : IRequest<int>
     {
         public int userPropertyId { get; set; }
         public string TodoDailyActivity { get; set; }
     }
-    public class CreateTodoDailyCommandHandler : IRequestHandler<CreateTodoDailyCommand, TodoDailyDto>
+    public class CreateTodoDailyCommandHandler : IRequestHandler<CreateTodoDailyCommand, int>
     {
         private ITodoDaily _todoDaily;
         public CreateTodoDailyCommandHandler(ITodoDaily todoDaily)
         {
             _todoDaily = todoDaily;
         }
-        public async Task<TodoDailyDto> Handle(CreateTodoDailyCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateTodoDailyCommand request, CancellationToken cancellationToken)
         {
             var asset = new TodoDaily
             {
                 TodoDailyActivity = request.TodoDailyActivity,
                 Check = false,
-                MadeSince = DateTime.UtcNow,
-                MadeUntil = DateTime.UtcNow.AddDays(1),
+                MadeSince = DateTime.Now,
+                MadeUntil = DateTime.Now.AddDays(1),
                 UserPropertyId = request.userPropertyId
             };
 

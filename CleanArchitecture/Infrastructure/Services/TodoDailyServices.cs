@@ -1,5 +1,6 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
+using Application.Common.Mappings;
 using Application.TodoDailys.Queries.GetAllTodoDailys;
 using Application.TodoDailys.Queries.GetTodoDailyHistories;
 using AutoMapper;
@@ -35,49 +36,27 @@ namespace Infrastructure.Services
             return todoDaily;
         }
 
-        public async Task<TodoDailyDto> Add(TodoDaily todoDaily, CancellationToken cancellationToken)
+        public async Task<TodoDailyHistoryVm> GetTodoDailyHistory(int userPropertyId, int pageNumber, int pageSize)
         {
+            return new TodoDailyHistoryVm
+            {
+                TodoDailyHistories = await _context.TodoDailyHistories
+                    .Where(x => x.UserPropertyId == userPropertyId)
+                    .ProjectTo<TodoDailyHistoryDto>(_mapper.ConfigurationProvider)
+                    .PaginatedListAsync(pageNumber, pageSize)
+            };
+        }
 
-
+        public async Task<int> Add(TodoDaily todoDaily, CancellationToken cancellationToken)
+        {
             _context.TodoDailys.Add(todoDaily);
             await _context.SaveChangesAsync(cancellationToken);
-            return await _context.TodoDailys
-                .ProjectTo<TodoDailyDto>(_mapper.ConfigurationProvider)
-                .FirstOrDefaultAsync();
-        }
-
-        public async Task<int> Delete(int todoDailyId, CancellationToken cancellationToken)
-        {
-            var todoDaily = await _context.TodoDailys.FindAsync(todoDailyId);
-            if(todoDaily != null)
-            {
-                _context.TodoDailys.Remove(todoDaily);
-                await _context.SaveChangesAsync(cancellationToken);
-            }
-
             return todoDaily.Id;
-        }
-
-
-        public async Task<bool> IsChecked(int todoDailyId)
-        {
-            return await _context.TodoDailys.AnyAsync(x => x.Check == true);
-        }
-        public async Task<bool> RemoveIfTrue(int todoDailyId)
-        {
-            var todoDailyAsset = await _context.TodoDailys.FindAsync(todoDailyId);
-            var isAlredyChecked = await IsChecked(todoDailyAsset.Id);
-            if (isAlredyChecked)
-            {
-                _context.TodoDailys.Remove(todoDailyAsset);
-            }
-
-            return true;
         }
 
         public async Task<bool> Update(int todoDailyId, CancellationToken cancellationToken)
         {
-            var now = DateTime.UtcNow;
+            var now = DateTime.Now;
 
             var todoDailyAsset = await _context.TodoDailys.FindAsync(todoDailyId);
 
@@ -133,7 +112,7 @@ namespace Infrastructure.Services
                 TodoDailyActivity = assetTodoHistory.TodoDailyActivity,
                 Check = false,
                 MadeSince = assetTodoHistory.MadeSince,
-                MadeUntil = DateTime.UtcNow.AddDays(1)
+                MadeUntil = DateTime.Now.AddDays(1)
             };
             _context.TodoDailys.Add(todoDaily);
             await _context.SaveChangesAsync(cancellationToken);
@@ -147,17 +126,35 @@ namespace Infrastructure.Services
 
             return true;
         }
-        public async Task<IList<TodoDailyHistoryDto>> GetTodoDailyHistory(int todoDailyId, CancellationToken cancellationToken)
+
+        public async Task<int> Delete(int todoDailyId, CancellationToken cancellationToken)
         {
-            var isAlredyChecked = await IsChecked(todoDailyId);
-            if (isAlredyChecked)
+            var now = DateTime.Now;
+            var assetTodoDaily = await _context.TodoDailys.FindAsync(todoDailyId);
+
+            if (now > assetTodoDaily.MadeUntil)
+                throw new NotFoundException("Cant delete, todo alredy expired");
+
+            if (assetTodoDaily != null)
             {
-                return await _context.TodoDailyHistories
-                    .ProjectTo<TodoDailyHistoryDto>(_mapper.ConfigurationProvider)
-                    .ToListAsync(cancellationToken);
+                _context.TodoDailys.Remove(assetTodoDaily);
+                await _context.SaveChangesAsync(cancellationToken);
             }
 
-            throw new NotFoundException("Not found");
+            return assetTodoDaily.Id;
+        }
+
+        public async Task<int> DeleteHistory(int todoDailyHistoryId, CancellationToken cancellationToken)
+        {
+            var assetTodoDailyHistory = await _context.TodoDailyHistories.FindAsync(todoDailyHistoryId);
+
+            if (assetTodoDailyHistory == null)
+                throw new NotFoundException();
+
+            _context.TodoDailyHistories.Remove(assetTodoDailyHistory);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return assetTodoDailyHistory.Id;
         }
 
         private static DateTime GetDefaultDateDue(DateTime now) => now.AddDays(DefaultDateDueDays);
