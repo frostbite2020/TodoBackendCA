@@ -4,14 +4,16 @@ using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210331015713_007")]
+    partial class _007
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,12 +91,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("TodoDailyActivity")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserPropertyId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserPropertyId");
 
                     b.ToTable("TodoDailyHistories");
                 });
@@ -182,17 +179,6 @@ namespace Infrastructure.Persistence.Migrations
                 });
 
             modelBuilder.Entity("Domain.Entities.TodoDaily", b =>
-                {
-                    b.HasOne("Domain.Entities.UserProperty", "UserProperty")
-                        .WithMany()
-                        .HasForeignKey("UserPropertyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("UserProperty");
-                });
-
-            modelBuilder.Entity("Domain.Entities.TodoDailyHistory", b =>
                 {
                     b.HasOne("Domain.Entities.UserProperty", "UserProperty")
                         .WithMany()

@@ -4,14 +4,16 @@ using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210330071136_003")]
+    partial class _003
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,13 +56,13 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("MadeSince")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("MadeUntil")
+                    b.Property<DateTime>("MadeUntil")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("TodoDailyActivity")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserPropertyId")
+                    b.Property<int?>("UserPropertyId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -83,18 +85,12 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<bool>("CheckStatus")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("MadeSince")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("TodoDailyActivity")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserPropertyId")
+                    b.Property<int?>("TodoDailyId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserPropertyId");
+                    b.HasIndex("TodoDailyId");
 
                     b.ToTable("TodoDailyHistories");
                 });
@@ -185,22 +181,18 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.HasOne("Domain.Entities.UserProperty", "UserProperty")
                         .WithMany()
-                        .HasForeignKey("UserPropertyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserPropertyId");
 
                     b.Navigation("UserProperty");
                 });
 
             modelBuilder.Entity("Domain.Entities.TodoDailyHistory", b =>
                 {
-                    b.HasOne("Domain.Entities.UserProperty", "UserProperty")
+                    b.HasOne("Domain.Entities.TodoDaily", "TodoDaily")
                         .WithMany()
-                        .HasForeignKey("UserPropertyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TodoDailyId");
 
-                    b.Navigation("UserProperty");
+                    b.Navigation("TodoDaily");
                 });
 
             modelBuilder.Entity("Domain.Entities.TodoItem", b =>

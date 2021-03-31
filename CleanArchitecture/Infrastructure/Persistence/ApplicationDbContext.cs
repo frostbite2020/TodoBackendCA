@@ -23,6 +23,8 @@ namespace Infrastructure.Persistence
 
         public DbSet<TodoCategory> TodoCategories { get; set; }
         public DbSet<UserProperty> UserProps { get; set; }
+        public DbSet<TodoDaily> TodoDailys { get; set; }
+        public DbSet<TodoDailyHistory> TodoDailyHistories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

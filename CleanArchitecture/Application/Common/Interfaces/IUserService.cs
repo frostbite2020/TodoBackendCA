@@ -10,7 +10,6 @@ namespace Application.Common.Interfaces
     {
         Task<UserProperty> Authenticate(string username, string password);
         Task<IList<UserModel>> GetAll(CancellationToken cancellationToken);
-
         Task<UserModel> GetById(int id);
         Task<UserProperty> Create(UserProperty user, string password, CancellationToken cancellationToken);
         Task<UpdateModel> Update(UserProperty user, CancellationToken cancellationToken, string password = null);
