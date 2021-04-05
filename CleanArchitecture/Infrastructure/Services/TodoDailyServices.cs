@@ -132,14 +132,14 @@ namespace Infrastructure.Services
             var now = DateTime.Now;
             var assetTodoDaily = await _context.TodoDailys.FindAsync(todoDailyId);
 
+            if (assetTodoDaily == null)
+                throw new NotFoundException();
+
             if (now > assetTodoDaily.MadeUntil)
                 throw new NotFoundException("Cant delete, todo alredy expired");
 
-            if (assetTodoDaily != null)
-            {
-                _context.TodoDailys.Remove(assetTodoDaily);
-                await _context.SaveChangesAsync(cancellationToken);
-            }
+            _context.TodoDailys.Remove(assetTodoDaily);
+            await _context.SaveChangesAsync(cancellationToken);
 
             return assetTodoDaily.Id;
         }

@@ -66,7 +66,6 @@ namespace Infrastructure.Services
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
-
             _context.UserProps.Add(user);
             await _context.SaveChangesAsync(cancellationToken);
 
