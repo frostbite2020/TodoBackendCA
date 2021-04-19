@@ -16,7 +16,7 @@ namespace Application.TodoDailys.Commands.DeleteTodoDaily
 
     public class DeleteTodoDailyCommandHandler : IRequestHandler<DeleteTodoDailyCommand, int>
     {
-        private ITodoDaily _todoDaily;
+        private readonly ITodoDaily _todoDaily;
         public DeleteTodoDailyCommandHandler(ITodoDaily todoDaily)
         {
             _todoDaily = todoDaily;

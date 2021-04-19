@@ -4,6 +4,7 @@ using Domain.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,6 +35,13 @@ namespace Application.TodoCategories.Commands.UpdateTodoCategory
             }
             entity.Id = request.Id;
             entity.CategoryTitle = request.CategoryTitle;
+
+            var titleValidation = _context.TodoCategories
+                .Where(x => x.UserPropertyId == entity.UserPropertyId)
+                .Any(x => x.CategoryTitle == request.CategoryTitle);
+
+            if (titleValidation)
+                throw new AppException();
 
             await _context.SaveChangesAsync(cancellationToken);
 

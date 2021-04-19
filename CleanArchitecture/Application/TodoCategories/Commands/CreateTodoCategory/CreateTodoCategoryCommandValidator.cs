@@ -19,7 +19,6 @@ namespace TodoList.Application.TodoCategories.Commands.CreateTodoCategory
             RuleFor(v => v.CategoryTitle)
                 .NotEmpty().WithMessage("Title is required.")
                 .MaximumLength(200).WithMessage("Title must not exceed 200 characters.");
-                /*.MustAsync(BeUniqueTitle).WithMessage("The specified title already exists.");*/
 
             RuleFor(x => x.UserPropertyId)
                 .NotEmpty().WithMessage("Value cannot be null")
@@ -30,12 +29,6 @@ namespace TodoList.Application.TodoCategories.Commands.CreateTodoCategory
         {
             return await _context.TodoCategories
                 .AnyAsync(x => x.UserPropertyId == userId);
-        }
-
-        public async Task<bool> BeUniqueTitle(string categoryTitle, CancellationToken cancellationToken)
-        {
-            return await _context.TodoCategories
-                .AllAsync(l => l.CategoryTitle != categoryTitle);
         }
 
     }

@@ -1,6 +1,7 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Mappings;
+using Application.TodoDailys.Commands.UpdateTodoDaily;
 using Application.TodoDailys.Queries.GetAllTodoDailys;
 using Application.TodoDailys.Queries.GetTodoDailyHistories;
 using AutoMapper;
@@ -54,11 +55,11 @@ namespace Infrastructure.Services
             return todoDaily.Id;
         }
 
-        public async Task<bool> Update(int todoDailyId, CancellationToken cancellationToken)
+        public async Task<bool> Update(UpdateTodoDailyDto todoDaily, CancellationToken cancellationToken)
         {
             var now = DateTime.Now;
 
-            var todoDailyAsset = await _context.TodoDailys.FindAsync(todoDailyId);
+            var todoDailyAsset = await _context.TodoDailys.FindAsync(todoDaily.Id);
 
             //check if it is null then return Exception
             if (todoDailyAsset == null)
@@ -66,65 +67,12 @@ namespace Infrastructure.Services
 
             //Update with a new Data
             todoDailyAsset.MadeUntil = now;
-            todoDailyAsset.Check = true;
+            todoDailyAsset.Check = todoDaily.CheckStatus;
             _context.TodoDailys.Update(todoDailyAsset);
             await _context.SaveChangesAsync(cancellationToken);
 
-            //Make a new History of todo daily data
-            var todoDailyHistory = new TodoDailyHistory
-            {
-                TodoDailyActivity = todoDailyAsset.TodoDailyActivity,
-                CheckStatus = true,
-                MadeSince = todoDailyAsset.MadeSince,
-                CheckDate = now,
-                UserPropertyId = todoDailyAsset.UserPropertyId
-            };
-
-            _context.TodoDailyHistories.Add(todoDailyHistory);
-            await _context.SaveChangesAsync(cancellationToken);
-
-            //delete data if checked
-            
-            if (todoDailyAsset.Check)
-            {
-                _context.TodoDailys.Remove(todoDailyAsset);
-                await _context.SaveChangesAsync(cancellationToken);
-            }
-
             return true;
 
-        }
-        public async Task<bool> UnceklistHistory(int todoDailyHistoryId, CancellationToken cancellationToken)
-        {
-            var assetTodoHistory = await _context.TodoDailyHistories.FindAsync(todoDailyHistoryId);
-            
-            if (assetTodoHistory == null)
-                throw new NotFoundException();
-
-            assetTodoHistory.CheckStatus = false;
-            _context.TodoDailyHistories.Update(assetTodoHistory);
-            await _context.SaveChangesAsync(cancellationToken);
-
-            // Re Add todo daily
-            var todoDaily = new TodoDaily
-            {
-                UserPropertyId = assetTodoHistory.UserPropertyId,
-                TodoDailyActivity = assetTodoHistory.TodoDailyActivity,
-                Check = false,
-                MadeSince = assetTodoHistory.MadeSince,
-                MadeUntil = DateTime.Now.AddDays(1)
-            };
-            _context.TodoDailys.Add(todoDaily);
-            await _context.SaveChangesAsync(cancellationToken);
-
-            //delete cause it got unchecked
-            if(assetTodoHistory.CheckStatus == false)
-            {
-                _context.TodoDailyHistories.Remove(assetTodoHistory);
-                await _context.SaveChangesAsync(cancellationToken);
-            }
-
-            return true;
         }
 
         public async Task<int> Delete(int todoDailyId, CancellationToken cancellationToken)
@@ -135,8 +83,15 @@ namespace Infrastructure.Services
             if (assetTodoDaily == null)
                 throw new NotFoundException();
 
-            if (now > assetTodoDaily.MadeUntil)
-                throw new NotFoundException("Cant delete, todo alredy expired");
+            var todoHistory = new TodoDailyHistory
+            {
+                UserPropertyId = assetTodoDaily.UserPropertyId,
+                TodoDailyActivity = assetTodoDaily.TodoDailyActivity,
+                MadeSince = assetTodoDaily.MadeSince,
+                CheckDate = now,
+                CheckStatus = assetTodoDaily.Check
+            };
+            _context.TodoDailyHistories.Add(todoHistory);
 
             _context.TodoDailys.Remove(assetTodoDaily);
             await _context.SaveChangesAsync(cancellationToken);

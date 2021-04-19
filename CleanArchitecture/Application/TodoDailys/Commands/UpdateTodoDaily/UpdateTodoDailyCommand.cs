@@ -12,17 +12,23 @@ namespace Application.TodoDailys.Commands.UpdateTodoDaily
     public class UpdateTodoDailyCommand : IRequest<bool>
     {
         public int todoDailyId { get; set; }
+        public bool CheckStatus { get; set; }
     }
     public class UpdateTodoDailyCommandHandler : IRequestHandler<UpdateTodoDailyCommand, bool>
     {
-        private ITodoDaily _todoDaily;
+        private readonly ITodoDaily _todoDaily;
         public UpdateTodoDailyCommandHandler(ITodoDaily todoDaily)
         {
             _todoDaily = todoDaily;
         }
         public async Task<bool> Handle(UpdateTodoDailyCommand request, CancellationToken cancellationToken)
         {
-            return await _todoDaily.Update(request.todoDailyId, cancellationToken);
+            var asset = new UpdateTodoDailyDto
+            {
+                Id = request.todoDailyId,
+                CheckStatus = request.CheckStatus
+            };
+            return await _todoDaily.Update(asset, cancellationToken);
         }
     }
 }

@@ -17,15 +17,7 @@ namespace Application.TodoCategories.Commands.UpdateTodoCategory
 
             RuleFor(v => v.CategoryTitle)
                 .NotEmpty().WithMessage("Title is required.")
-                .MaximumLength(200).WithMessage("Title must not exceed 200 characters.")
-                .MustAsync(BeUniqueTitle).WithMessage("The specified title already exists.");
-        }
-
-        public async Task<bool> BeUniqueTitle(UpdateTodoCategoryCommand model, string categoryTitle, CancellationToken cancellationToken)
-        {
-            return await _context.TodoCategories
-                .Where(l => l.Id != model.Id)
-                .AllAsync(l => l.CategoryTitle != categoryTitle);
+                .MaximumLength(200).WithMessage("Title must not exceed 200 characters.");
         }
     }
 }

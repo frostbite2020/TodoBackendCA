@@ -16,7 +16,7 @@ namespace Application.TodoDailys.Commands.DeleteTodoDailyHistory
     
     public class DeleteTodoDailyHistoryCommandHandler : IRequestHandler<DeleteTodoDailyHistoryCommand, int>
     {
-        private ITodoDaily _todoDaily;
+        private readonly ITodoDaily _todoDaily;
         public DeleteTodoDailyHistoryCommandHandler(ITodoDaily todoDaily)
         {
             _todoDaily = todoDaily;

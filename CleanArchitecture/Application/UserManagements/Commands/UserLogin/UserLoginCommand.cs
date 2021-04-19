@@ -22,7 +22,7 @@ namespace Application.UserManagements.Commands.UserLogin
 
     public class UserLoginCommandHandler : IRequestHandler<UserLoginCommand, UserLoginSuccessDto>
     {
-        private IUserService _userService;
+        private readonly IUserService _userService;
         private readonly AppSettingUsers _appSettings;
 
         public UserLoginCommandHandler(IUserService userService, IOptions<AppSettingUsers> appSettings)

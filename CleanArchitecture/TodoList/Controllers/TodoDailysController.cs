@@ -2,7 +2,6 @@
 using Application.TodoDailys.Commands.CreateTodoDaily;
 using Application.TodoDailys.Commands.DeleteTodoDaily;
 using Application.TodoDailys.Commands.DeleteTodoDailyHistory;
-using Application.TodoDailys.Commands.UncheckTodoDaily;
 using Application.TodoDailys.Commands.UpdateTodoDaily;
 using Application.TodoDailys.Queries.GetAllTodoDailys;
 using Application.TodoDailys.Queries.GetTodoDailyHistories;
@@ -39,15 +38,6 @@ namespace TodoList.Controllers
         public async Task<ActionResult<bool>> Update(int id, UpdateTodoDailyCommand command)
         {
             if (command.todoDailyId != id)
-                throw new NotFoundException();
-
-            return await Mediator.Send(command);
-        }
-
-        [HttpPut("uncheck/{id}")]
-        public async Task<ActionResult<bool>> Uncheck(int id, UncheckTodoDailyCommand command)
-        {
-            if (command.TodoDailyHistoryId != id)
                 throw new NotFoundException();
 
             return await Mediator.Send(command);

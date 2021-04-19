@@ -20,8 +20,8 @@ namespace Application.UserManagements.Commands.UserRegister
 
     public class UserRegisterCommandHandler : IRequestHandler <UserRegisterCommand, UserProperty>
     {
-        private IUserService _userService;
-        private IMapper _mapper;
+        private readonly IUserService _userService;
+        private readonly IMapper _mapper;
 
         public UserRegisterCommandHandler(IUserService userService, IMapper mapper)
         {

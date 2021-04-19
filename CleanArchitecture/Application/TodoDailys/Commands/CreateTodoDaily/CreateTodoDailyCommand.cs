@@ -18,7 +18,7 @@ namespace Application.TodoDailys.Commands.CreateTodoDaily
     }
     public class CreateTodoDailyCommandHandler : IRequestHandler<CreateTodoDailyCommand, int>
     {
-        private ITodoDaily _todoDaily;
+        private readonly ITodoDaily _todoDaily;
         public CreateTodoDailyCommandHandler(ITodoDaily todoDaily)
         {
             _todoDaily = todoDaily;
